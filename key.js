@@ -14,15 +14,3 @@ exports.twitterKeys = {
 
 //---------------------------------------------------
 
-//access straight to the libary
-// var fs = require("fs");
-
-// fs.writeFile("random.txt", 'spotify-this-song "I Want It That Way"', function (err){
-
-//   if(err) {
-//     return console.log(err);
-//   }
-//   console.log("random.txt was updated!");
-// })
-
-// console.log('this is loaded');

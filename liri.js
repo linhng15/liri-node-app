@@ -18,12 +18,7 @@ var twitterAPIKeys = objOfkey.twitterKeys;
  // note: will show the last 20 tweets 
  //retrieve the data -- by making a request to twitter node packages 
 var Twitter = require('twitter');
-var client = new Twitter({
-  consumer_key: twitterAPIKeys.consumer_key,
-  consumer_secret: twitterAPIKeys.consumer_secret,
-  access_token_key: twitterAPIKeys.access_token_key,
-  access_token_secret: twitterAPIKeys.access_token_secret
-});
+var client = new Twitter(twitterAPIKeys);
  	// console.log(client);
 var params = {screen_name: 'Snack_LinhSnack'};
 client.get('statuses/user_timeline', params, function(error, tweets, response) {
