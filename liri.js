@@ -7,8 +7,6 @@ var argv = process.argv;
 // console.log(argv[2]);
 
 
-
-
 // ---------twitter -----------------------------
  
 var getTwitterTweets = function(){
@@ -39,8 +37,8 @@ client.get('statuses/user_timeline', params, function(error, tweets, response) {
     		break;
     	}
     	console.log(i+1);
-    	console.log(tweets[i]["created_at"]);
-    	console.log(tweets[i]["text"]);
+    	console.log("Created at: " + tweets[i]["created_at"]);
+    	console.log("My Tweets: " + tweets[i]["text"]);
     	console.log('-----------------------------------');
    
     }
@@ -48,7 +46,7 @@ client.get('statuses/user_timeline', params, function(error, tweets, response) {
 });
 }
 
-//---------------------------------
+//--------------------spotify---------------
 //request spotify npm
 var Spotify = require('spotify');
 var getSpotifySong = function(){
@@ -73,9 +71,9 @@ var getSpotifySong = function(){
   });
 }
 
-//--------------------------
+//--------------------------omdb------------
 //request npm
-var getIMBDMovie = function(){
+var getOMBDMovie = function(){
 	//access
 var request = require("request");
 // Grab or assemble the movie name and store it in a variable called "movieName"
@@ -89,10 +87,10 @@ for (var i = 3; i < argv.length; i++) {
 	// console.log(i);
 	// console.log("current word is... " + argv[i]);
 
-	console.log("movie name is now... " + movieName);
+	// console.log("movie name is now... " + movieName);
 	var currentWord = argv[i];
 		// if you have a movie that's one word or first word 
-	if (i === 2) {
+	if (i === 3) {
 		// 	make movie name into one word 
 		movieName += currentWord 
 		// else movie with more than one word
@@ -107,18 +105,65 @@ for (var i = 3; i < argv.length; i++) {
 var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&r=json";
 
 // This line is just to help us debug against the actual URL.
-console.log(queryUrl);
+// console.log(queryUrl);
 
 request(queryUrl, function(error, response, body) {
 	if(!error && response.statusCode === 200) {
-		console.log("the movie year " + JSON.parse(body).Year)
+		console.log("the movie title: " + JSON.parse(body).Title)
+		console.log("the movie year: " + JSON.parse(body).Year)
+		console.log("the movie IMDB Rating: " + JSON.parse(body).imdbRating)
+		console.log("the movie produced: " + JSON.parse(body).Production)
+		console.log("the movie language: " + JSON.parse(body).Language)
+		console.log("the movie plot: " + JSON.parse(body).Plot)
+		console.log("the movie actors: " + JSON.parse(body).Actors)
+		console.log("the movie Rotten Tomatoes rating: " + JSON.parse(body).Ratings[1].Value)
+		console.log("the movie Rotten Tomatoes URL: " + JSON.parse(body).tomatoURL)
+		console.log('-----------------------------------');
+
 	}
 })
 }
 
+//-------------------random.txt-------------------------
 
-// twitter must recognize my-tweet commands 
+//access straight to the libary
+var fs = require("fs");
 
+fs.writeFile("random.txt", 'spotify-this-song "I Want It That Way"', function (err){
+
+  if(err) {
+    return console.log(err);
+  }
+  console.log("random.txt was updated!");
+})
+
+var getDoWhatItSay = function(){
+//------
+	fs.readFile("random.txt", "utf8", function(error, data){
+		console.log(data);
+		var dataArray = data.split(",")
+            var arg2 = process.argv[2];
+            var arg3 = process.argv[3];
+
+            arg2 = dataArray[0];
+            arg3 = dataArray[1];
+        });
+}
+
+
+
+//------
+fs.appendFile("something.txt", "payday", function(error) {
+	if(error) {
+		console.log(error);
+	} else {
+		console.log("content added!");
+	}
+});
+
+
+
+//------------------------------------------
 switch(argv[2]) {
     case "my-tweets":
         console.log("Pulling up Tweets");
@@ -130,10 +175,11 @@ switch(argv[2]) {
         break;
     case "movie-this":
         console.log("Pulling up Movie info");
-        getIMBDMovie();
+        getOMBDMovie();
         break;
     case "do-what-it-says":
         console.log("Pulling up anything you said");
+        getDoWhatItSay();
         break;
     
     default:
